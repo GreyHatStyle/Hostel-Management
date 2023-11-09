@@ -1,5 +1,3 @@
-# GUI BASE MAIN
-
 import tkinter as tk
 from tkinter import ttk
 import Extras
@@ -24,6 +22,7 @@ def Update_data_frame():
     up_ph_no = tk.IntVar()
     up_father = tk.IntVar()
     up_fath_no = tk.IntVar()
+    up_delete = tk.IntVar()
 
     def search_click():
         try:
@@ -37,6 +36,18 @@ def Update_data_frame():
             messagebox.showerror("Not Found!", "Please Write room number like this: A-101")
 
     def go_button_frame():
+        name = combo_box_up.get()
+        if up_delete.get() == 1:
+            ans = messagebox.askquestion(f"Are you sure to Delete {name}'s Data?",
+                                      f"If you delete {name}'s data it will be irrecoverable and lost. ")
+
+            if ans == "yes":
+                baseData.Delete_data(name)
+                messagebox.showinfo(f"Deleted Successfully!", f"Data of {name} has been deleted successfully")
+                frame.destroy()
+            else:
+                messagebox.showinfo(f"Deletion Canceled!", "Deletion process in canceled")
+                # frame.destroy()
 
         info_frame = tk.Frame(frame, highlightbackground="black", highlightthickness=1, width=660, height=655, bg='#D1FF88')
         info_frame.place(x=320, y=18)
@@ -150,6 +161,7 @@ def Update_data_frame():
 
         def for_delete_check():
             c_delete.deselect()
+
         up_label = tk.Label(frame1, text="Select To Update", font='comicsans 20 bold', bg='#D1FF88')
         up_label.place(x=35, y=350)
 
@@ -186,7 +198,7 @@ def Update_data_frame():
             c_father.deselect()
 
         global c_delete
-        c_delete = tk.Checkbutton(frame1, text="Delete Data", font="comicsans 15 bold",
+        c_delete = tk.Checkbutton(frame1, text="Delete Data", font="comicsans 15 bold", variable=up_delete,
                                    bg='#D1FF88', command=del_select)
         c_delete.place(x=40, y=570)
 
@@ -289,9 +301,17 @@ def Add_Student_frame():
                 number = n_inp.get()
                 f_name = f_inp.get()
                 f_no = fn_inp.get()
+                lst = [s_name, block_num, college, number, f_name, f_no]
+                flag = True
+                for i in lst:
+                    if i == "":
+                        flag = False
 
-                baseData.Add_data_Student(block_num, s_name, college, number, f_name, f_no)
-                messagebox.showinfo("Done!", f"The data of {s_name} in room {block_num} has been added!")
+                if flag:
+                    baseData.Add_data_Student(block_num, s_name, college, number, f_name, f_no)
+                    messagebox.showinfo("Done!", f"The data of {s_name} in room {block_num} has been added!")
+                else:
+                    messagebox.showerror("Error!", "Please Fill all the fields")
             except Exception as e:
                 print(e)
                 messagebox.showerror("Error!", "Kindly fill all the fields")
