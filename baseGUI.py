@@ -3,13 +3,146 @@ from tkinter import ttk
 import Extras
 import baseData
 from tkinter import messagebox
-import TeleBot
+import datetime
 
 
 def back_button(frame, x, y):
     back = tk.Button(frame, text="Back", font='timesnewroman 20 bold', bg='light green', width=10,
                      command=frame.destroy)
     back.place(x=x, y=y)
+
+
+def Verify_complains_frame():
+    today_date = str(datetime.date.today())
+    selected_date = None
+
+    frame = tk.Frame(root, bg='#B5FF42')
+    frame.place(x=0, y=0, width=1000, height=750)
+
+    frame1 = tk.Frame(frame, highlightbackground="black", highlightthickness=1, width=260, height=655, bg='#D1FF88')
+    frame1.place(x=10, y=19)
+
+    date_label = tk.Label(frame1, text="Enter Date", font='comicsans 20 bold', bg='#D1FF88')
+    date_label.place(x=45, y=30)
+
+    textbox = tk.Entry(frame1, font='comcicsans 20 bold', width=4)
+    textbox.place(x=80, y=80)
+
+    month_label = tk.Label(frame1, text="Select Month", font='comicsans 20 bold', bg='#D1FF88')
+    month_label.place(x=35, y=200)
+
+    month_list = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec", ""]
+    combo_month_box = ttk.Combobox(frame1, value=month_list, font='timesnewroman 15 bold', width=10)
+    combo_month_box.current(len(month_list) - 1)
+    # combo_box.bind("<<ComboboxSelected>>", combo_click)
+    combo_month_box.place(x=50, y=240)
+
+    year_label = tk.Label(frame1, text="Enter Year", font='comicsans 20 bold', bg='#D1FF88')
+    year_label.place(x=45, y=350)
+
+    yearbox = tk.Entry(frame1, font='comcicsans 20 bold', width=7)
+    yearbox.place(x=60, y=400)
+
+    def Carp_frame(date):
+
+        heading_label = tk.Label(frame, text="Complains Dealt", font='comicsans 25 bold', bg='#D1FF88')
+        heading_label.place(x=500, y=20)
+        global carp_frame
+        carp_frame = tk.Frame(frame, highlightbackground="black", highlightthickness=1, width=310, height=280,
+                              bg='#D1FF88')
+        carp_frame.place(x=300, y=90)
+
+        carp_label = tk.Label(carp_frame, text="Carpenter", font='comicsans 20 bold', bg='#D1FF88')
+        carp_label.pack()
+
+        sc_frame = tk.Frame(carp_frame)
+        my_scroll = tk.Scrollbar(sc_frame, orient=tk.VERTICAL)
+        carp_box = tk.Listbox(sc_frame, font='comicsans 20 ', width=19, height=6, yscrollcommand=my_scroll.set)
+        # todo set command to take data from pgadmin here
+        data_list = baseData.Data_viewer_Complain(date, 'Carpenter')
+
+        for i in data_list:
+            carp_box.insert(tk.END, i)
+        my_scroll.config(command=carp_box.yview)
+        my_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        sc_frame.pack()
+        carp_box.pack(pady=15)
+
+    def Plumb_frame(date):
+        plum_frame = tk.Frame(frame, highlightbackground="black", highlightthickness=1, width=310, height=280,
+                              bg='#D1FF88')
+        plum_frame.place(x=650, y=90)
+
+        plum_label = tk.Label(plum_frame, text="Plumber", font='comicsans 20 bold', bg='#D1FF88')
+        plum_label.pack()
+
+        sc_frame = tk.Frame(plum_frame)
+        my_scroll = tk.Scrollbar(sc_frame, orient=tk.VERTICAL)
+        plum_box = tk.Listbox(sc_frame, font='comicsans 20 ', width=19, height=6, yscrollcommand=my_scroll.set)
+        # todo set command to take data from pgadmin here
+        data_list = baseData.Data_viewer_Complain(date, 'Plumber')
+
+        for i in data_list:
+            plum_box.insert(tk.END, i)
+        my_scroll.config(command=plum_box.yview)
+        my_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        sc_frame.pack()
+        plum_box.pack(pady=15)
+
+    def Elect_frame(date):
+        elec_frame = tk.Frame(frame, highlightbackground="black", highlightthickness=1, width=310, height=280,
+                              bg='#D1FF88')
+        elec_frame.place(x=300, y=400)
+
+        elec_label = tk.Label(elec_frame, text="Electrician", font='comicsans 20 bold', bg='#D1FF88')
+        elec_label.pack()
+
+        sc_frame = tk.Frame(elec_frame)
+        my_scroll = tk.Scrollbar(sc_frame, orient=tk.VERTICAL)
+        elec_box = tk.Listbox(sc_frame, font='comicsans 20 ', width=19, height=6, yscrollcommand=my_scroll.set)
+        # todo set command to take data from pgadmin here
+        data_list = baseData.Data_viewer_Complain(date, 'Electrician')
+
+        for i in data_list:
+            elec_box.insert(tk.END, i)
+        my_scroll.config(command=elec_box.yview)
+        my_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        sc_frame.pack()
+        elec_box.pack(pady=15)
+
+    def Other_frame(date):
+        other_frame = tk.Frame(frame, highlightbackground="black", highlightthickness=1, width=310, height=280,
+                              bg='#D1FF88')
+        other_frame.place(x=650, y=400)
+
+        other_label = tk.Label(other_frame, text="Other Complains", font='comicsans 20 bold', bg='#D1FF88')
+        other_label.pack()
+
+        sc_frame = tk.Frame(other_frame)
+        my_scroll = tk.Scrollbar(sc_frame, orient=tk.VERTICAL)
+        other_box = tk.Listbox(sc_frame, font='comicsans 20 ', width=19, height=6, yscrollcommand=my_scroll.set)
+        # todo set command to take data from pgadmin here
+        my_scroll.config(command=other_box.yview)
+        my_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+        sc_frame.pack()
+        other_box.pack(pady=15)
+
+    def Select_button_action():
+        try:
+            selected_date = f"{yearbox.get()}-{Extras.month_giver(combo_month_box.get())}-{textbox.get()}"
+            Carp_frame(selected_date)
+            Plumb_frame(selected_date)
+            Elect_frame(selected_date)
+            Other_frame(selected_date)
+        except Exception as e:
+            print(e)
+            messagebox.showerror('Error!', "Entered Date has no records available.. Please recheck date")
+
+    select_button = tk.Button(frame1, text="Select", font='timesnewroman 15 bold', bg='#05F9C8',
+                              command=Select_button_action, width=10)
+    select_button.place(x=55, y=500)
+
+    back_button(frame, 400, 680)
 
 
 def Update_data_frame():
@@ -429,11 +562,22 @@ def plumber_frame():
     except Exception as e:
         print(e)
 
-    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
+    def done_click():
+        s = str(datetime.date.today())
+        room = box.get(tk.ANCHOR)
+        if room == "":
+            messagebox.showerror("Select Room!", "Please Select Room number before clicking")
+        else:
+            print(s)
+            print(room)
+
+            baseData.Append_data_Complain(room, s, 'Plumber')
+            Extras.File_reseter(room, 'plumber')
+            box.delete(tk.ANCHOR)
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=done_click)
     done.pack(side=tk.LEFT)
 
-    deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
-    deleteAll.pack(side=tk.RIGHT)
 
 
 def carpenter_frame():
@@ -453,11 +597,21 @@ def carpenter_frame():
     except Exception as e:
         print(e)
 
-    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
-    done.pack(side=tk.LEFT, padx=10)
+    def done_click():
+        s = str(datetime.date.today())
+        room = box.get(tk.ANCHOR)
+        if room == "":
+            messagebox.showerror("Select Room!", "Please Select Room number before clicking")
+        else:
+            print(s)
+            print(room)
 
-    deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
-    deleteAll.pack(side=tk.RIGHT)
+            baseData.Append_data_Complain(room, s, 'Carpenter')
+            Extras.File_reseter(room, 'carpenter')
+            box.delete(tk.ANCHOR)
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=done_click)
+    done.pack(side=tk.LEFT, padx=10)
 
 
 def electrician_frame():
@@ -477,11 +631,21 @@ def electrician_frame():
     except Exception as e:
         print(e)
 
-    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
-    done.pack(side=tk.LEFT, pady=10)
+    def done_click():
+        s = str(datetime.date.today())
+        room = box.get(tk.ANCHOR)
+        if room == "":
+            messagebox.showerror("Select Room!", "Please Select Room number before clicking")
+        else:
+            print(s)
+            print(room)
 
-    deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
-    deleteAll.pack(side=tk.RIGHT, pady=10)
+            baseData.Append_data_Complain(room, s, 'Electrician')
+            Extras.File_reseter(room, 'electrician')
+            box.delete(tk.ANCHOR)
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=done_click)
+    done.pack(side=tk.LEFT, pady=10)
 
 
 def others_complains():
@@ -510,13 +674,8 @@ def others_complains():
     my_scroll.pack(side=tk.BOTTOM, fill=tk.X)
     sc_frame.pack()
 
-
-
     done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
     done.pack(side=tk.LEFT)
-
-    deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
-    deleteAll.pack(side=tk.RIGHT)
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -549,9 +708,9 @@ def head_gui():
                               command=Update_data_frame)
     Search_Button.pack(pady=20)
 
-    Search_Button = tk.Button(frame, text="Verify\nComplains", font='timesnewroman 20 bold', bg='light blue', width=9,
-                              command=None)
-    Search_Button.pack(pady=20)
+    Verify_button = tk.Button(frame, text="Verify\nComplains", font='timesnewroman 20 bold', bg='light blue', width=9,
+                              command=Verify_complains_frame)
+    Verify_button.pack(pady=20)
 
 
     # FRAME 2
