@@ -3,6 +3,7 @@ from tkinter import ttk
 import Extras
 import baseData
 from tkinter import messagebox
+import TeleBot
 
 
 def back_button(frame, x, y):
@@ -421,8 +422,15 @@ def plumber_frame():
     box = tk.Listbox(frame, font='comicsans 20 ', width=20, height=5)
     box.pack()
 
-    delete = tk.Button(frame, text="  Delete  ", font='timesnewroman 15 bold', bg='orange', command=None)
-    delete.pack(side=tk.LEFT)
+    lst = Extras.Give_List_of_Complains('plumber')
+    try:
+        for i in lst:
+            box.insert(tk.END, i)
+    except Exception as e:
+        print(e)
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
+    done.pack(side=tk.LEFT)
 
     deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
     deleteAll.pack(side=tk.RIGHT)
@@ -438,8 +446,15 @@ def carpenter_frame():
     box = tk.Listbox(frame, font='comicsans 20 ', width=20, height=5)
     box.pack()
 
-    delete = tk.Button(frame, text="  Delete  ", font='timesnewroman 15 bold', bg='orange', command=None)
-    delete.pack(side=tk.LEFT, padx=10)
+    lst = Extras.Give_List_of_Complains('carpenter')
+    try:
+        for i in lst:
+            box.insert(tk.END, i)
+    except Exception as e:
+        print(e)
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
+    done.pack(side=tk.LEFT, padx=10)
 
     deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
     deleteAll.pack(side=tk.RIGHT)
@@ -455,11 +470,18 @@ def electrician_frame():
     box = tk.Listbox(frame, font='comicsans 20 ', width=20, height=5)
     box.pack()
 
-    delete = tk.Button(frame, text="  Delete  ", font='timesnewroman 15 bold', bg='orange', command=None)
-    delete.pack(side=tk.LEFT)
+    lst = Extras.Give_List_of_Complains('electrician')
+    try:
+        for i in lst:
+            box.insert(tk.END, i)
+    except Exception as e:
+        print(e)
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
+    done.pack(side=tk.LEFT, pady=10)
 
     deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
-    deleteAll.pack(side=tk.RIGHT)
+    deleteAll.pack(side=tk.RIGHT, pady=10)
 
 
 def others_complains():
@@ -468,12 +490,30 @@ def others_complains():
 
     labelC = tk.Label(frame, text='        Other Complains      ', font='comicsans 15 bold')
     labelC.pack()
+    #20
+    # Scroll Bar
+    sc_frame = tk.Frame(frame)
+    my_scroll = tk.Scrollbar(sc_frame, orient=tk.HORIZONTAL)
 
-    box = tk.Listbox(frame, font='comicsans 20 ', width=20, height=5)
+    box = tk.Listbox(sc_frame, font='comicsans 15 ', width=28, height=7, xscrollcommand=my_scroll.set)
+    lst = Extras.Give_List_of_Others()
+
+    try:
+        for i in lst:
+            s = f"{i[0]} ({i[1]}):{i[2]}"
+            box.insert(tk.END, s)
+    except Exception as e:
+        print(e)
     box.pack()
 
-    delete = tk.Button(frame, text="  Delete  ", font='timesnewroman 15 bold', bg='orange', command=None)
-    delete.pack(side=tk.LEFT)
+    my_scroll.config(command=box.xview)
+    my_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+    sc_frame.pack()
+
+
+
+    done = tk.Button(frame, text="Done", font='timesnewroman 15 bold', bg='orange', command=None)
+    done.pack(side=tk.LEFT)
 
     deleteAll = tk.Button(frame, text="Delete ALL", font='timesnewroman 15 bold', bg='red', command=None)
     deleteAll.pack(side=tk.RIGHT)
@@ -513,20 +553,24 @@ def head_gui():
                               command=None)
     Search_Button.pack(pady=20)
 
+
     # FRAME 2
     frame2 = tk.LabelFrame(root, text="-", padx=20, pady=20)
     frame2.place(x=250, y=10)
 
-    labelC = tk.Label(frame2, text='\t\tTodays Complains\t         ', font='comicsans 20 bold')
+    labelC = tk.Label(frame2, text='Todays Complains', font='comicsans 20 bold', width=35)
     labelC.grid(row=0, column=0)
 
-    # FRAME PLUMBER
-    plumber_frame()
-    carpenter_frame()
-    electrician_frame()
-    others_complains()
+    # FRAME SETTER
+    def set_frame():
+        plumber_frame()
+        carpenter_frame()
+        electrician_frame()
+        others_complains()
+
+    refresh_button = tk.Button(frame2, text="Refresh", font='comicsans 10 bold', bg='light green', height=2,
+                                   command=set_frame)
+    refresh_button.grid(row=0, column=1)
+    set_frame()
     # Run the main event loop
     root.mainloop()
-
-
-head_gui()
