@@ -149,3 +149,72 @@ def Delete_data(name):
     cur.close()
     conn.close()
     print("deleted")
+
+
+def Append_data_Complain(room, date, field):
+    conn = psycopg2.connect(host="localhost",
+                            dbname="postgres",
+                            user="postgres",
+                            password="Manas@123",
+                            port=5432)
+    cur = conn.cursor()
+    c = f"""select * from "Complains" where "Date"='{date}';"""
+    cur.execute(c)
+    data = len(list(cur.fetchall()))
+
+    setter = ["NULL", "NULL", "NULL", "NULL"]
+
+    if data == 0:
+        if field == 'Carpenter':
+            setter[0] = f"array['{room}']"
+        elif field == 'Plumber':
+            setter[1] = f"array['{room}']"
+        elif field == 'Electrician':
+            setter[2] = f"array['{room}']"
+        else:
+            setter[3] = f"array['{room}']"
+
+        g = f"""
+        insert into "Complains"(
+            "Date",
+            "Carpenter",
+            "Plumber",
+            "Electrician",
+            "Others"
+        )
+        values
+        ('{date}', {setter[0]}, {setter[1]}, {setter[2]}, {setter[3]});
+        """
+        cur.execute(g)
+
+    else:
+        e = f"""
+        update "Complains"
+        set "{field}" = array_append("{field}", '{room}')
+        where "Date" = '{date}';
+        """
+        cur.execute(e)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+
+def Data_viewer_Complain(date, field):
+    conn = psycopg2.connect(host="localhost",
+                            dbname="postgres",
+                            user="postgres",
+                            password="Manas@123",
+                            port=5432)
+    cur = conn.cursor()
+    cur.execute(f'''select "{field}" from "Complains" where "Date"='{date}';''')
+    data = list(cur.fetchall())
+
+    try:
+        lst = list(data[0][0])
+    except:
+        lst = []
+    conn.commit()
+    cur.close()
+    conn.close()
+    return lst
