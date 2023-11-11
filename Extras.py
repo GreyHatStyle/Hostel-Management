@@ -55,6 +55,46 @@ def Information_Provide(lst):
 
     messagebox.showinfo(f"Data of {lst[0][2]}", s)
 
+
+def File_reseter(room, field):
+
+    f = open(f"Data\\{field}.txt", "r+")
+    lst = list(f.read().split('\n'))
+
+    for data in lst:
+        l = list(data.split(','))
+        if room in l:
+            lst.remove(data)
+        else:
+            continue
+
+    f.truncate(0)
+    f.close()
+
+    f1 = open(f"Data\\{field}.txt", "a+")
+    for data in lst:
+        f1.write(f"{data}\n")
+
+    f1.close()
+
+
+def month_giver(month):
+    month_dict = {
+        'Jan': 1,
+        'Feb': 2,
+        'Mar': 3,
+        'Apr': 4,
+        'May': 5,
+        'June': 6,
+        'July': 7,
+        'Aug': 8,
+        'Septr': 9,
+        'Oct': 10,
+        'Nov': 11,
+        'Dec': 12
+    }
+    return month_dict[month]
+
 # Telegram Functions
 
 
@@ -70,9 +110,8 @@ def Give_List_of_Complains(name: str) -> list:
             ans.append(l[1])
         except Exception as e:
             print(f"[Exception during list creation ]: {e}")
-
+    f.close()
     return ans
-
 
 
 def check_Message(lst: list, date) -> bool:
@@ -83,7 +122,7 @@ def check_Message(lst: list, date) -> bool:
         lst.insert(0, date)
 
         for s in lst:
-            f.write(f"{s}, ")
+            f.write(f"{s},")
 
         f.write("\n")
         f.close()
@@ -107,6 +146,5 @@ def Give_List_of_Others() -> list:
             ans.append(t)
         except:
             pass
-
+    f.close()
     return ans
-
