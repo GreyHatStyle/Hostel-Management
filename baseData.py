@@ -3,6 +3,7 @@ import random
 import Extras
 # ------------ Functions----------------------------------------
 
+
 # Returns list of information of empty rooms and how many O(n)
 def Block_check():
     conn = psycopg2.connect(host="localhost",
@@ -134,3 +135,17 @@ def Data_Updater(name, dct):
     cur.close()
     conn.close()
     print(s)
+
+
+def Delete_data(name):
+    conn = psycopg2.connect(host="localhost",
+                            dbname="postgres",
+                            user="postgres",
+                            password="Manas@123",
+                            port=5432)
+    cur = conn.cursor()
+    cur.execute(f'''DELETE FROM "HostelData" WHERE "Name" = '{name}';''')
+    conn.commit()
+    cur.close()
+    conn.close()
+    print("deleted")
