@@ -78,20 +78,23 @@ def File_reseter(room, field):
     f1.close()
 
 
+# File_reseter('A-103','others')
+
+
 def month_giver(month):
     month_dict = {
-        'Jan': 1,
-        'Feb': 2,
-        'Mar': 3,
-        'Apr': 4,
-        'May': 5,
-        'June': 6,
-        'July': 7,
-        'Aug': 8,
-        'Septr': 9,
-        'Oct': 10,
-        'Nov': 11,
-        'Dec': 12
+        'Jan': '01',
+        'Feb': '02',
+        'Mar': '03',
+        'Apr': '04',
+        'May': '05',
+        'June': '06',
+        'July': '07',
+        'Aug': '08',
+        'Septr': '09',
+        'Oct': '10',
+        'Nov': '11',
+        'Dec': '12'
     }
     return month_dict[month]
 
@@ -148,3 +151,15 @@ def Give_List_of_Others() -> list:
             pass
     f.close()
     return ans
+
+
+def Other_comp_lister(complain: str):
+    room = complain[0:5]
+    complain = complain.replace('(',':')
+    complain = complain.replace(')',':')
+    lst = list(complain.split(':'))
+    lst.remove('')
+    lst.pop(0)
+    lst.insert(0, room)
+    return lst
+
