@@ -5,8 +5,8 @@ import time
 import Extras
 # from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import telegram.ext as tl
-Token: Final = "6461982132:AAFTBNN4DqEb-hG6gxoY7zyr83CJ88JVqgk"
-Bot_username: Final = '@manas_hos_bot'
+Token: Final = "your_api_key"
+Bot_username: Final = 'your_bot_name'
 
 
 # Commands
